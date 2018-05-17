@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: kiwi-hello-service
+  labels:
+    app: kiwi-hello-service
+    branch: dev
+spec:
+  type: NodePort
+  selector:
+    app: kiwi-hello-pod
+    branch: dev
+  ports:
+  - name: main-port
+    port: 80
+    targetPort: 8080

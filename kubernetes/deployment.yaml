@@ -1,0 +1,27 @@
+---
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: kiwi-hello-deployment
+  labels:
+    app: kiwi-hello-deployment
+    branch: dev
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: kiwi-hello-pod
+      branch: dev
+  template:
+    metadata:
+      labels:
+        app: kiwi-hello-pod
+        branch: dev
+    spec:
+      containers:
+      - name: kiwi-hello
+        image: eu.gcr.io/devops-workshop-2510a27b/java_app:v1
+        #imagePullPolicy:
+        ports:
+        - name: http
+          containerPort: 8080

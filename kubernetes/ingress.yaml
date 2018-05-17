@@ -1,0 +1,15 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: kiwi-hello-ingress
+  labels:
+    app: kiwi-hello-ingress
+    branch: dev
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /*
+        backend:
+          serviceName: kiwi-hello-service
+          servicePort: 80
