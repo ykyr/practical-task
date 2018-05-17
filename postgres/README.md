@@ -12,8 +12,8 @@ gcloud sql instances create kiwi-pg \
 ```
 where ``kiwi-pg`` - database instance name.
 
-4. Use ``deployment_script.sh`` to install all resources. It will:
-  - Create ``proxyuser`` with password 
+4. Use [deployment_script.sh](https://github.com/ykyr/practical-task/blob/master/postgres/deployment_script.sh) to install all resources. It will:
+  - Create ``proxyuser`` with password
   - Create k8s secrets that proxy application will use connect to database
   - Set endpoints in pg-proxy.yml according to variables
   - Create k8s deployment, where pod will consists of application container and db-proxy container

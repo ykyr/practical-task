@@ -60,4 +60,4 @@ kubectl apply -f ingress.yml
 kubectl get ingress
 ```
 
-### [Task 2](../blob/master/potgres/README.md)
+### [Task 2](https://github.com/ykyr/practical-task/blob/master/potgres/README.md)
