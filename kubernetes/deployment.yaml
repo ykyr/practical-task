@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
       - name: kiwi-hello
-        image: eu.gcr.io/devops-workshop-2510a27b/java_app:v1
+        image: eu.gcr.io/$PROJECT_ID/java_app:v1
         #imagePullPolicy:
         ports:
         - name: http

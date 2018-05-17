@@ -1,0 +1,62 @@
+---
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: kiwi-pg-deployment
+  labels:
+    app: kiwi-pg-deployment
+    branch: dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kiwi-pg-pod
+      branch: dev
+  template:
+    metadata:
+      labels:
+        app: kiwi-pg-pod
+        branch: dev
+    spec:
+      containers:
+      - name: kiwi-hello
+        image: $APPLICATION_IMAGE
+        ports:
+        - name: http
+          containerPort: 8080
+        env:
+          - name: POSTGRES_DB_HOST
+            value: 127.0.0.1:5432
+          # [START cloudsql_secrets]
+          - name: POSTGRES_DB_USER
+            valueFrom:
+              secretKeyRef:
+                name: cloudsql-db-credentials
+                key: username
+          - name: POSTGRES_DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: cloudsql-db-credentials
+                key: password
+          # [END cloudsql_secrets]
+      # Change <INSTANCE_CONNECTION_NAME> here to include your GCP
+      # project, the region of your Cloud SQL instance and the name
+      # of your Cloud SQL instance. The format is
+      # $PROJECT:$REGION:$INSTANCE
+      # [START proxy_container]
+      - name: cloudsql-proxy
+        image: gcr.io/cloudsql-docker/gce-proxy:1.11
+        command: ["/cloud_sql_proxy",
+                  "-instances=$connectionName=tcp:5432",
+                  "-credential_file=/secrets/cloudsql/credentials.json"]
+        volumeMounts:
+          - name: cloudsql-instance-credentials
+            mountPath: /secrets/cloudsql
+            readOnly: true
+      # [END proxy_container]
+    # [START volumes]
+      volumes:
+        - name: cloudsql-instance-credentials
+          secret:
+            secretName: cloudsql-instance-credentials
+      # [END volumes]
